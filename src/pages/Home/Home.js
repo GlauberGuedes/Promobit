@@ -18,6 +18,7 @@ import { PageHeader } from '../../components/layout'
 
 export default function Home() {
     //GENERAL
+    const categoryList = ["Ação", "Aventura", "Animação", "Comédia", "Crime", "Documentário", "Drama", "Família", "Fantasia", "História", "Terror", "Música", "Mistério", "Romance", "Ficção científica", "Cinema TV", "Thriller", "Guerra", "Faroeste"]
     
     
     //STATES
@@ -40,7 +41,7 @@ export default function Home() {
                 <div className="home-header-filters">
                     <h6>FILTRE POR:</h6>
                     <div className="home-header-filters__list">
-
+                    
                     </div>
                 </div>
             </section>
