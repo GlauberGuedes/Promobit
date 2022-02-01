@@ -5,7 +5,7 @@ import React from 'react';
 import './home.scss'
 
 //COMPONENTS
-
+import { PageHeader } from '../../components/layout'
 
 //SERVICES - api, conectors...
 
@@ -33,6 +33,17 @@ export default function Home() {
     
     
     return (
-        <div></div>
+        <div className='home'>
+            <PageHeader/>
+            <section className="home-header">
+                <h1>Milhões de filmes, séries e pessoas para descobrir. Explore já.</h1>
+                <div className="home-header-filters">
+                    <h6>FILTRE POR:</h6>
+                    <div className="home-header-filters__list">
+
+                    </div>
+                </div>
+            </section>
+        </div>
     )
 }

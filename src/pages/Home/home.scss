@@ -1,1 +1,19 @@
-.home {}
+.home {
+  .home-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    height: 450px;
+    background-color: #2D0C5E;
+    color: #FFFFFF;
+
+    > h1 {
+      text-align: center;
+      font-size: 48px;
+      line-height: 56px;
+      max-width: 780px;
+    }
+  }
+}
