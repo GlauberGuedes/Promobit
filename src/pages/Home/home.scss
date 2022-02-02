@@ -32,4 +32,14 @@
       }
     }
   }
+
+  .home-main {
+    padding: 29px 112px;
+
+    .home-movie-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+  }
 }

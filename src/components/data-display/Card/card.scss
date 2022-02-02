@@ -1,0 +1,23 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 176px;
+
+  > img {
+    margin-bottom: 8px;
+    width: 176px;
+    height: 264px;
+    border: 1px solid #E7E7E7;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__date {
+    color: #646464;
+    font-size: 14px;
+  }
+}
