@@ -34,12 +34,19 @@
   }
 
   .home-main {
+    display: flex;
+    flex-direction: column;
     padding: 29px 112px;
 
     .home-movie-list {
       display: flex;
       flex-wrap: wrap;
       gap: 32px;
+    }
+
+    .home-pagination {
+      display: flex;
+      justify-content: center;
     }
   }
 }

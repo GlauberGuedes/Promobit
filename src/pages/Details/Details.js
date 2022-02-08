@@ -1,6 +1,6 @@
 //GLOBAL - components from npm
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
 //STYLES
@@ -9,6 +9,7 @@ import "./details.scss";
 //COMPONENTS
 import { PageHeader } from "../../components/layout";
 import { CardCast, Card } from "../../components/data-display";
+import { Loading } from "../../components/feedback";
 
 //SERVICES - api, conectors...
 import * as API from "../../services/api";
@@ -20,6 +21,7 @@ import * as API from "../../services/api";
 export default function Details() {
   //GENERAL
   const { id } = useParams();
+  const navigate = useNavigate();
 
   //STATES
   const [movie, setMovie] = useState();
@@ -101,11 +103,12 @@ export default function Details() {
   return (
     <>
       {loading ? (
-        <></>
+        <Loading open={loading} />
       ) : (
         <div className="details">
           <PageHeader />
           <section className="details-header">
+            <div className="return" onClick={() => navigate('/')}>voltar</div>
             <img
               src={`https://www.themoviedb.org/t/p/w500/${movie.poster_path}`}
               alt={movie.title}
