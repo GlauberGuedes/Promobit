@@ -45,7 +45,9 @@ export default function Pagination({pages, limit, setPage, currentPage}) {
         }
       };
     
-    
+    console.log(value)
+    console.log(pages)
+    console.log(currentPage)
     //USE EFFECTS
     return (
         <div className="pagination">

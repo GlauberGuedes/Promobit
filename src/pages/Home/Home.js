@@ -34,23 +34,24 @@ export default function Home() {
   ? Number(localStorage.getItem("page"))
   : 1);
   const [totalPages, setTotalPages] = useState([]);
-  const [loading, setLoading] = useState("page");
+  const [loading, setLoading] = useState(true);
+  const [loadingList, setLoadingList] = useState(true);
   const [categoryList, setCategoryList] = useState([]);
 
   //REDUX - Selectors
 
   //FUNCTIONS
   const homeInformation = async () => {
-    setLoading("page");
+    setLoading(true);
     await getMoviesList();
     await getMoviesListCategory();
-    setLoading("");
+    setLoading(false);
   };
 
   const movieInformation = async () => {
-    setLoading("list");
+    setLoadingList(true);
     await getMoviesList();
-    setLoading("");
+    setLoadingList(false);
   }
 
   const getMoviesList = async () => {
@@ -108,8 +109,8 @@ export default function Home() {
 
   return (
     <>
-      {loading === 'page' ? (
-        <Loading open={loading ? true : false} />
+      {loading ? (
+        <Loading open={loading} />
       ) : (
         <div className="home">
           <PageHeader />
@@ -143,8 +144,8 @@ export default function Home() {
           </section>
           <main className="home-main">
             <>
-              {loading === "list" ? (
-                <Loading open={loading ? true : false} />
+              {loadingList ? (
+                <Loading open={loadingList} />
               ) : (
                 <div className="home-movie-list">
                   {moviesList.filter(movieFilter).map((movie, index) => (
