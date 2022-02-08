@@ -13,11 +13,10 @@ import "./button.scss";
 //ASSETS - icons, images...
 import { ReactComponent as IconClose } from "../../../assets/Close.svg";
 
-export default function Button({ text, onClose, onClick }) {
+export default function Button({ text, onClose, onClick, active }) {
   //GENERAL
 
   //STATES
-  const [buttonActive, setButtonActive] = useState(false);
 
   //REDUX - Selectors
 
@@ -27,19 +26,18 @@ export default function Button({ text, onClose, onClick }) {
 
   return (
     <div
-      className={`button ${buttonActive ? "active" : ""}`}
+      className={`button ${active ? "active" : ""}`}
       onClick={() => {
-          if(!buttonActive) {
-              setButtonActive(true);
+          if(!active) {
               onClick();
           }
       }}
     >
       <p>{text}</p>
-      {buttonActive && (
+      {active && (
         <IconClose
           onClick={() => {
-            setButtonActive(false);
+
             onClose();
           }}
         />

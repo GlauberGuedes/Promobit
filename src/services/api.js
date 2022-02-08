@@ -4,7 +4,7 @@ export async function get(endPoint,page) {
   const headers = {
     "Content-type": "application/json",
   };
-console.log(`${baseURL}${endPoint}?api_key=${process.env.REACT_APP_KEY}${page ? page : ''}&language=pt-BR`)
+
   try {
     const resposta = await fetch(`${baseURL}${endPoint}?api_key=${process.env.REACT_APP_KEY}${page ? page : ''}&language=pt-BR`, {
       headers,

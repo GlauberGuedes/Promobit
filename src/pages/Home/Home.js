@@ -24,7 +24,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   //STATES
-  const [filtersList, setFiltersList] = useState([]);
+  const [filtersList, setFiltersList] = useState(JSON.parse(localStorage.getItem("filter")) ? JSON.parse(localStorage.getItem("filter")) : []);
   const [moviesList, setMoviesList] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState([]);
@@ -37,7 +37,7 @@ export default function Home() {
   const getMoviesList = async () => {
     setLoading(true);
     const resposta = await API.get("movie/popular", `&page=${page}`);
-    console.log(resposta);
+
     if (resposta.erro) {
       return console.log(resposta.dados);
     } else {
@@ -65,8 +65,18 @@ export default function Home() {
     setLoading(false);
   };
 
-  const movieFilter = () => {
-    
+  const movieFilter = (movie) => {
+    if(filtersList.length > 0) {
+      for(const category of movie.genre_ids) {
+        const categoryMovie = filtersList.find(id => id === category);
+        if(categoryMovie) {
+          return movie;
+        }
+      }
+    } else {
+      return movie;
+    }
+
   }
 
   //USE EFFECTS
@@ -74,6 +84,11 @@ export default function Home() {
     getMoviesList();
     getMoviesListCategory();
   }, [page]);
+
+  useEffect(() => {
+    console.log(localStorage.getItem("filter"))
+    localStorage.setItem("filter", JSON.stringify(filtersList))
+  }, [filtersList])
 
   return (
     <>
@@ -93,6 +108,7 @@ export default function Home() {
                   <Button
                     key={category.id}
                     text={category.name}
+                    active={filtersList.find(id => id === category.id)}
                     onClick={() => {
                       const arrayFilters = [...filtersList];
                       arrayFilters.push(category.id);
