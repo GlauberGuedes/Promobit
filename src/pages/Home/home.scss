@@ -48,6 +48,11 @@
       display: flex;
       justify-content: center;
     }
+
+    .home-pagination-mobile {
+      display: none;
+      justify-content: center;
+    }
   }
 }
 
@@ -80,6 +85,14 @@
   
       .home-movie-list {
         gap: 16px;
+      }
+
+      .home-pagination {
+        display: none;
+      }
+  
+      .home-pagination-mobile {
+        display: flex;
       }
     }
   }

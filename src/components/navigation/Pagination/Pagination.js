@@ -22,7 +22,7 @@ export default function Pagination({pages, limit, setPage, currentPage}) {
     
     
     //STATES
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState(currentPage < pages.length - limit ? currentPage - 1 : currentPage - limit);
     
     
     //REDUX - Selectors
@@ -47,8 +47,6 @@ export default function Pagination({pages, limit, setPage, currentPage}) {
     
     
     //USE EFFECTS
- 
-    
     return (
         <div className="pagination">
             {currentPage !== 1 && <div onClick={() => {setValue(0); setPage(1)}} className="pagination-last">Primeira</div>}

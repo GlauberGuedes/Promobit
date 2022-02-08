@@ -45,7 +45,7 @@ export default function Details() {
 
   const getMovieCredits = async () => {
     const resposta = await API.get(`movie/${id}/credits`);
-    console.log("credits", resposta);
+
     if (resposta.erro) {
       return console.log(resposta.dados);
     } else {
@@ -61,23 +61,20 @@ export default function Details() {
         }
       }
       setCrewList(arrayCrew);
-      console.log(arrayCrew);
     }
   };
 
   const getMovieTrailer = async () => {
     const resposta = await API.get(`movie/${id}/videos`);
-    console.log("trailer", resposta);
     if (resposta.erro) {
       return console.log(resposta.dados);
     } else {
-      setTrailer(resposta.dados);
+      setTrailer(resposta.dados.results);
     }
   };
 
   const getMovieRecommendations = async () => {
     const resposta = await API.get(`movie/${id}/recommendations`);
-    console.log("recommendations", resposta);
     if (resposta.erro) {
       return console.log(resposta.dados);
     } else {
@@ -87,7 +84,6 @@ export default function Details() {
 
   const getMovieDetail = async () => {
     const resposta = await API.get(`movie/${id}`);
-    console.log("details", resposta);
     if (resposta.erro) {
       return console.log(resposta.dados);
     } else {
@@ -108,7 +104,9 @@ export default function Details() {
         <div className="details">
           <PageHeader />
           <section className="details-header">
-            <div className="return" onClick={() => navigate('/')}>voltar</div>
+            <div className="return" onClick={() => navigate("/")}>
+              voltar
+            </div>
             <img
               src={`https://www.themoviedb.org/t/p/w500/${movie.poster_path}`}
               alt={movie.title}
@@ -124,25 +122,53 @@ export default function Details() {
                 <p>
                   {format(new Date(movie.release_date), "dd/MM/yyyy")} •&nbsp;
                 </p>
-                <p>{movie.genres.map((item, index) => {
+                <p>
+                  {movie.genres.map((item, index) => {
                     if (index !== movie.genres.length - 1) {
                       return item.name + ", ";
                     } else {
                       return item.name;
                     }
-                  })} •&nbsp;</p>
-                  <p>{(movie.runtime / 60).toFixed(0)}h {movie.runtime % 60}m</p>
+                  })}{" "}
+                  •&nbsp;
+                </p>
+                <p>
+                  {(movie.runtime / 60).toFixed(0)}h {movie.runtime % 60}m
+                </p>
               </div>
               <div className="details-header-information__assessment">
                 <div className="circle-wrap">
                   <div className="circle">
                     <div className="mask half">
-                      <div className="fill" style={{transform: `rotate(${180*(movie.vote_average * 10) / 100}deg)`}}></div>
+                      <div
+                        className="fill"
+                        style={{
+                          transform: `rotate(${
+                            (180 * (movie.vote_average * 10)) / 100
+                          }deg)`,
+                        }}
+                      ></div>
                     </div>
-                    <div className="mask full" style={{transform: `rotate(${180*(movie.vote_average * 10) / 100}deg)`}}>
-                      <div className="fill" style={{transform: `rotate(${180*(movie.vote_average * 10) / 100}deg)`}}></div>
+                    <div
+                      className="mask full"
+                      style={{
+                        transform: `rotate(${
+                          (180 * (movie.vote_average * 10)) / 100
+                        }deg)`,
+                      }}
+                    >
+                      <div
+                        className="fill"
+                        style={{
+                          transform: `rotate(${
+                            (180 * (movie.vote_average * 10)) / 100
+                          }deg)`,
+                        }}
+                      ></div>
                     </div>
-                  <div className="inside-circle">{movie.vote_average * 10}%</div>
+                    <div className="inside-circle">
+                      {movie.vote_average * 10}%
+                    </div>
                   </div>
                 </div>
                 <p>Avaliação dos usuários</p>
@@ -175,26 +201,35 @@ export default function Details() {
                 ))}
               </div>
             </div>
-            <div className="details-main-trailer">
-              <h3>Trailer</h3>
-              <img
-                src={`https://www.themoviedb.org/t/p/w500/${movie.poster_path}`}
-                alt={movie.title}
-              />
-            </div>
-            <div className="details-main-recommendation">
-              <h3>Recomendações</h3>
-              <div className="details-main-recommendation__list">
-                {recommendations.map((recommendation, index) => (
-                  <Card
-                    key={index}
-                    title={recommendation.title}
-                    image={recommendation.poster_path}
-                    date={recommendation.release_date}
+            {trailer.length > 0 && (
+              <div className="details-main-trailer">
+                <h3>Trailer</h3>
+                <a
+                  href={`https://www.youtube.com/watch?v=${trailer[0].key}`}
+                  target="_blank"
+                >
+                  <img
+                    src={`https://www.themoviedb.org/t/p/w500/${movie.poster_path}`}
+                    alt={movie.name}
                   />
-                ))}
+                </a>
               </div>
-            </div>
+            )}
+            {recommendations.length > 0 && (
+              <div className="details-main-recommendation">
+                <h3>Recomendações</h3>
+                <div className="details-main-recommendation__list">
+                  {recommendations.map((recommendation, index) => (
+                    <Card
+                      key={index}
+                      title={recommendation.title}
+                      image={recommendation.poster_path}
+                      date={recommendation.release_date}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </main>
         </div>
       )}

@@ -177,7 +177,7 @@
       flex-direction: column;
       gap: 24px;
 
-      > img {
+       img {
         width: 907px;
         height: 510px;
       }
@@ -210,6 +210,11 @@
       height: max-content;
       color: #ffffff;
       padding: 34px 14px 61px 16px;
+
+      .return {
+        top: 10px;
+        left: 30px;
+      }
   
       > img {
         filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -234,7 +239,7 @@
   
       .details-main-trailer {
   
-        > img {
+         img {
           width: 324px;
           height: 182px;
         }

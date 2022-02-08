@@ -24,20 +24,37 @@ export default function Home() {
   const navigate = useNavigate();
 
   //STATES
-  const [filtersList, setFiltersList] = useState(JSON.parse(localStorage.getItem("filter")) ? JSON.parse(localStorage.getItem("filter")) : []);
+  const [filtersList, setFiltersList] = useState(
+    JSON.parse(localStorage.getItem("filter"))
+      ? JSON.parse(localStorage.getItem("filter"))
+      : []
+  );
   const [moviesList, setMoviesList] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(localStorage.getItem("page")
+  ? Number(localStorage.getItem("page"))
+  : 1);
   const [totalPages, setTotalPages] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState("page");
   const [categoryList, setCategoryList] = useState([]);
 
   //REDUX - Selectors
 
   //FUNCTIONS
-  const getMoviesList = async () => {
-    setLoading(true);
-    const resposta = await API.get("movie/popular", `&page=${page}`);
+  const homeInformation = async () => {
+    setLoading("page");
+    await getMoviesList();
+    await getMoviesListCategory();
+    setLoading("");
+  };
 
+  const movieInformation = async () => {
+    setLoading("list");
+    await getMoviesList();
+    setLoading("");
+  }
+
+  const getMoviesList = async () => {
+    const resposta = await API.get("movie/popular", `&page=${page}`);
     if (resposta.erro) {
       return console.log(resposta.dados);
     } else {
@@ -50,11 +67,9 @@ export default function Home() {
       }
       setTotalPages(pages);
     }
-    setLoading(false);
   };
 
   const getMoviesListCategory = async () => {
-    setLoading(true);
     const resposta = await API.get(`genre/movie/list`);
 
     if (resposta.erro) {
@@ -62,38 +77,39 @@ export default function Home() {
     } else {
       setCategoryList(resposta.dados.genres);
     }
-    setLoading(false);
   };
 
   const movieFilter = (movie) => {
-    if(filtersList.length > 0) {
-      for(const category of movie.genre_ids) {
-        const categoryMovie = filtersList.find(id => id === category);
-        if(categoryMovie) {
+    if (filtersList.length > 0) {
+      for (const category of movie.genre_ids) {
+        const categoryMovie = filtersList.find((id) => id === category);
+        if (categoryMovie) {
           return movie;
         }
       }
     } else {
       return movie;
     }
-
-  }
+  };
 
   //USE EFFECTS
   useEffect(() => {
-    getMoviesList();
-    getMoviesListCategory();
+    homeInformation();
+  }, []);
+
+  useEffect(() => {
+    movieInformation()
   }, [page]);
 
   useEffect(() => {
-    console.log(localStorage.getItem("filter"))
-    localStorage.setItem("filter", JSON.stringify(filtersList))
-  }, [filtersList])
+    localStorage.setItem("filter", JSON.stringify(filtersList));
+    localStorage.setItem("page", page);
+  }, [filtersList, page]);
 
   return (
     <>
-      {loading ? (
-        <Loading open={loading} />
+      {loading === 'page' ? (
+        <Loading open={loading ? true : false} />
       ) : (
         <div className="home">
           <PageHeader />
@@ -108,7 +124,7 @@ export default function Home() {
                   <Button
                     key={category.id}
                     text={category.name}
-                    active={filtersList.find(id => id === category.id)}
+                    active={filtersList.find((id) => id === category.id)}
                     onClick={() => {
                       const arrayFilters = [...filtersList];
                       arrayFilters.push(category.id);
@@ -126,23 +142,37 @@ export default function Home() {
             </div>
           </section>
           <main className="home-main">
-            <div className="home-movie-list">
-              {moviesList.filter(movieFilter).map((movie, index) => (
-                <Card
-                  key={index}
-                  image={movie.poster_path}
-                  title={movie.title}
-                  date={movie.release_date}
-                  onClick={() => navigate(`/${movie.id}`)}
-                />
-              ))}
-            </div>
+            <>
+              {loading === "list" ? (
+                <Loading open={loading ? true : false} />
+              ) : (
+                <div className="home-movie-list">
+                  {moviesList.filter(movieFilter).map((movie, index) => (
+                    <Card
+                      key={index}
+                      image={movie.poster_path}
+                      title={movie.title}
+                      date={movie.release_date}
+                      onClick={() => navigate(`/${movie.id}`)}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
             <div className="home-pagination">
               <Pagination
                 pages={totalPages}
                 currentPage={page}
                 setPage={setPage}
                 limit={5}
+              />
+            </div>
+            <div className="home-pagination-mobile">
+              <Pagination
+                pages={totalPages}
+                currentPage={page}
+                setPage={setPage}
+                limit={3}
               />
             </div>
           </main>
