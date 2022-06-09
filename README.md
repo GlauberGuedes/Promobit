@@ -1,6 +1,6 @@
 # Promobit
 
-Como abrir o projeto:
+1. Como abrir o projeto:
 
 - clone o repositório
 - "npm i" para instalar todas as dependências
